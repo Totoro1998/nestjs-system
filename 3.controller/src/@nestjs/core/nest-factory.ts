@@ -1,6 +1,5 @@
 import { NestApplication } from "./nest-application";
 import { Logger } from "./logger";
-
 export class NestFactory {
   static async create(module: any) {
     //启动Nest应用

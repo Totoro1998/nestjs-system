@@ -1,5 +1,4 @@
 import "reflect-metadata";
-
 interface ControllerOptions {
   prefix?: string;
 }
@@ -8,7 +7,6 @@ interface ControllerOptions {
 export function Controller(): ClassDecorator; //传空串
 export function Controller(prefix: string): ClassDecorator; //路径前缀
 export function Controller(options: ControllerOptions): ClassDecorator; //传递对象
-
 export function Controller(prefixOrOptions?: string | ControllerOptions): ClassDecorator {
   let options: ControllerOptions = {};
   if (typeof prefixOrOptions === "string") {
