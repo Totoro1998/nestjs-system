@@ -4,14 +4,14 @@ import { LoggerClassService, LoggerService, UseValueService, UseFactory } from "
 @Module({
   controllers: [AppController],
   providers: [
-    {
-      provide: "SUFFIX", //后缀
-      useValue: "suffix",
-    },
     LoggerClassService, //这样定义provider的话，token值就是这个类本身，这种写法最多 90%以上用这个就可以了
     {
       provide: LoggerService,
       useClass: LoggerService, //说明提供的是一个类
+    },
+    {
+      provide: "SUFFIX", //后缀
+      useValue: "suffix",
     },
     {
       //也个也是一种定义provider的方法

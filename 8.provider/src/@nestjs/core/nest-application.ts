@@ -6,7 +6,7 @@ import { INJECTED_TOKENS, DESIGN_PARAMTYPES } from "@nestjs/common";
 export class NestApplication {
   //在它的内部私用化一个Express实例
   private readonly app: Express = express();
-  //在此处保存全部的providers
+  //在此处保存全部的providers,值是类的实例或者某个具体的值
   private readonly providers = new Map();
   constructor(protected readonly module) {
     this.app.use(express.json()); //用来把JSON格式的请求体对象放在req.body上
@@ -23,6 +23,7 @@ export class NestApplication {
       //如果provier是一个类
       if (provider.provide && provider.useClass) {
         const dependencies = this.resolveDependencies(provider.useClass);
+        console.log("dependencies", dependencies);
         //创建类的实例
         const classInstance = new provider.useClass(...dependencies);
         //把provider的token和类的实例保存到this.providers里
@@ -32,11 +33,8 @@ export class NestApplication {
         this.providers.set(provider.provide, provider.useValue);
       } else if (provider.provide && provider.useFactory) {
         const inject = provider.inject ?? [];
-        //const injectedValues = inject.map((injectedToken)=>this.getProviderByToken(injectedToken));
-        //const injectedValues = inject.map(this.getProviderByToken.bind(this));
         const injectedValues = inject.map(this.getProviderByToken);
         const value = provider.useFactory(...injectedValues);
-        //提供的是一个值，则不需要容器帮助实例化，直接使用此值注册就可以了
         this.providers.set(provider.provide, value);
       } else {
         //表示只提供了一个类,token是这个类，值是这个类的实例

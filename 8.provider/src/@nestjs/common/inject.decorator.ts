@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import { INJECTED_TOKENS } from "./";
+
+// 返回一个参数装饰器
 export function Inject(token: string): ParameterDecorator {
   //target类本身 propertyKey方法的名称 parameterIndex参数的索引
   return (target: Object, propertyKey: string, parameterIndex: number) => {
