@@ -42,7 +42,7 @@ class DIContainer {
     if (Service instanceof Function) {
       //可能是一个类
       //获取实现类的构造函数参数的类型数组
-      const dependencies = Reflect.getMetadata("design:paramtypes", Service) ?? []; //[Engine]
+      const dependencies = Reflect.getMetadata("design:paramtypes", Service) ?? []; // [ [class Engine] ]
       //递归解析所有的依赖项
       const injections = dependencies.map((dependency) => this.resolve(dependency.name));
       //创建并返回实现类的实例
