@@ -23,7 +23,6 @@ export class NestApplication {
       //如果provier是一个类
       if (provider.provide && provider.useClass) {
         const dependencies = this.resolveDependencies(provider.useClass);
-        console.log("dependencies", dependencies);
         //创建类的实例
         const classInstance = new provider.useClass(...dependencies);
         //把provider的token和类的实例保存到this.providers里
