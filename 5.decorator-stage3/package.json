@@ -1,5 +1,5 @@
 {
-  "name": "4.stage3",
+  "name": "5.decorator-stage3",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "reflect-metadata": "^0.2.2",
     "typescript": "^5.5.2"
   }
 }
