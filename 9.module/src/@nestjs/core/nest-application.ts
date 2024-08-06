@@ -6,9 +6,9 @@ import { INJECTED_TOKENS, DESIGN_PARAMTYPES } from "@nestjs/common";
 export class NestApplication {
   //在它的内部私用化一个Express实例
   private readonly app: Express = express();
-  //在此处保存所有的provider的实例key就是token, 值就是类的实例或者值
+  //在此处保存所有的provider的实例。key就是token, 值就是类的实例或者值
   private readonly providerInstances = new Map();
-  //此入存放着全局可用的提供者和token
+  //此入存放着全局可用的提供者或token
   private readonly globalProviders = new Set();
   //记录每个模块里有哪些provider的token
   private readonly moduleProviers = new Map();
@@ -23,7 +23,6 @@ export class NestApplication {
   }
   //初始化提供化
   initProviders() {
-    //重写注册provider的流程
     //获取模块导入的元数据
     const imports = Reflect.getMetadata("imports", this.module) ?? [];
     //遍历所有的导入的模块
@@ -39,9 +38,7 @@ export class NestApplication {
     }
   }
   private registerProvidersFromModule(module, ...parentModules) {
-    //获取导入的是不是全局模块
-    const global = Reflect.getMetadata("global", module);
-    //拿到导入的模块providers进行全量注册
+    //拿到导入的模块的providers进行全量注册
     const importedProviders = Reflect.getMetadata("providers", module) ?? [];
     //1.有可能导入的模块只导出了一部分，并没有全量导出,所以需要使用exports进行过滤
     const exports = Reflect.getMetadata("exports", module) ?? [];
@@ -54,6 +51,8 @@ export class NestApplication {
       } else {
         const provider = importedProviders.find((provider) => provider === exportToken || provider.provide == exportToken);
         if (provider) {
+          //获取导入的是不是全局模块
+          const global = Reflect.getMetadata("global", module);
           [module, ...parentModules].forEach((module) => {
             this.addProvider(provider, module, global);
           });
@@ -61,10 +60,12 @@ export class NestApplication {
       }
     }
   }
+
   private isModule(exportToken) {
     return exportToken && exportToken instanceof Function && Reflect.getMetadata("isModule", exportToken);
   }
-  //原来的provider都混在一起了，现在需要分开，每个模块有自己的providers
+
+  //每个模块有自己的providers
   addProvider(provider, module, global = false) {
     //此providers代表module这个模块对应的provider的token
     const providers = global ? this.globalProviders : this.moduleProviers.get(module) || new Set();
@@ -115,9 +116,11 @@ export class NestApplication {
       providers.add(provider);
     }
   }
+
   use(middleware) {
     this.app.use(middleware);
   }
+
   private getProviderByToken = (injectedToken, module) => {
     //如何通过token在特定模块下找对应的provider
     //先找到此模块对应的token set,再判断此injectedToken在不在此set中,如果存在， 是可能返回对应的provider实例
