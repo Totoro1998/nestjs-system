@@ -1,39 +1,28 @@
-import "reflect-metadata";
-//用于装饰 类的构造函数或方法的参数
-//用来实现在方法调用时验证参数的值
-const REQUIRED_PARAMETERS = "REQUIRED_PARAMETERS";
-/**
- *
- * @param target 装饰的目标对象，对于静态成员来说....
- * @param propertyKey 参数所属的方法名称
- * @param parameterIndex 参数在参数列表中的索引 0
- */
-function validate(target: any, propertyKey: string, parameterIndex: number) {
-  // 定义在实例上的原型
-  const existingRequiredParameters: number[] = Reflect.getOwnMetadata(REQUIRED_PARAMETERS, target, propertyKey) || [];
-  existingRequiredParameters.push(parameterIndex);
-  Reflect.defineMetadata(REQUIRED_PARAMETERS, existingRequiredParameters, target, propertyKey);
-}
-function validateParameters(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  const originalMethod = descriptor.value;
-  descriptor.value = function (...args: any[]) {
-    const existingRequiredParameters: number[] = Reflect.getOwnMetadata(REQUIRED_PARAMETERS, target, propertyKey) || [];
-    for (let parameterIndex of existingRequiredParameters) {
-      if (args[parameterIndex] === undefined) {
-        throw new Error(`Missing required arguments at position ${parameterIndex}`);
+// 在构造函数中定义默认值
+function defaultValue(defaults: { [key: string]: any }) {
+  return function <T extends { new (...args: any[]): {} }>(construtor: T) {
+    return class extends construtor {
+      constructor(...args) {
+        super(...args);
+        Object.keys(defaults).forEach((key) => {
+          if (this[key] === undefined) {
+            this[key] = defaults[key];
+          }
+        });
       }
-    }
-    return originalMethod.apply(this, args);
+    };
   };
 }
-class User {
-  constructor(private name: string, private age: number) {}
-  @validateParameters
-  setName(newName: string, @validate age: number) {
-    this.name = newName;
-    this.age = age;
-  }
+
+@defaultValue({
+  theme: "dark",
+})
+class Settings {
+  theme: string;
 }
-const user = new User("Alice", 10);
-//user.setName('Bob');
-user.setName(undefined, undefined);
+let s = new Settings();
+console.log(s.theme);
+export {};
+
+const settings = new Settings();
+console.log(settings.theme);

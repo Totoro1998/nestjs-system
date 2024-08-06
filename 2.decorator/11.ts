@@ -10,6 +10,7 @@ function defaultValue(value: any) {
     const setter = function (newValue) {
       val = newValue;
     };
+    //在类的原型上定义了一个属性
     Object.defineProperty(target, propertyKey, {
       enumerable: true,
       configurable: true,

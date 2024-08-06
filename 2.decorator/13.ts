@@ -1,53 +1,39 @@
-
-//不同类型的装饰器的执行顺序
+import "reflect-metadata";
+//用于装饰 类的构造函数或方法的参数
+//用来实现在方法调用时验证参数的值
+const REQUIRED_PARAMETERS = "REQUIRED_PARAMETERS";
 /**
- * 1.属性装饰器、方法装饰器、访问器装饰器它们是按照在类中出现的顺序，从上往下依次执行
- * 2.类装饰器最后执行
- * 3.参数装饰器先于方法执行
+ *
+ * @param target 装饰的目标对象，对于静态成员来说....
+ * @param propertyKey 参数所属的方法名称
+ * @param parameterIndex 参数在参数列表中的索引 0
  */
-function classDecorator1(target){
-    console.log('classDecorator1')
+function validate(target: any, propertyKey: string, parameterIndex: number) {
+  // 定义在实例上的原型
+  const existingRequiredParameters: number[] = Reflect.getOwnMetadata(REQUIRED_PARAMETERS, target, propertyKey) || [];
+  existingRequiredParameters.push(parameterIndex);
+  Reflect.defineMetadata(REQUIRED_PARAMETERS, existingRequiredParameters, target, propertyKey);
 }
-function classDecorator2(target){
-    console.log('classDecorator2')
-}
-function propertyDecorator1(target,propertyKey){
-    console.log('propertyDecorator1')
-}
-function propertyDecorator2(target,propertyKey){
-    console.log('propertyDecorator2')
-}
-function methodDecorator1(target,propertyKey){
-    console.log('methodDecorator1')
-}
-function methodDecorator2(target,propertyKey){
-    console.log('methodDecorator2')
-}
-function accessorDecorator1(target,propertyKey){
-    console.log('accessorDecorator1')
-}
-function accessorDecorator2(target,propertyKey){
-    console.log('accessorDecorator2')
-}
-function parametorDecorator1(target,propertyKey,parametorIndex:number){
-    console.log('parametorDecorator1',propertyKey)//propertyKey方法名
-}
-function parametorDecorator2(target,propertyKey,parametorIndex:number){
-    console.log('parametorDecorator2',propertyKey)//propertyKey方法名
-}
-@classDecorator1
-@classDecorator2
-class Example{
-   
-    @accessorDecorator1
-    @accessorDecorator2
-    get myProp(){
-        return this.prop;
+function validateParameters(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  descriptor.value = function (...args: any[]) {
+    const existingRequiredParameters: number[] = Reflect.getOwnMetadata(REQUIRED_PARAMETERS, target, propertyKey) || [];
+    for (let parameterIndex of existingRequiredParameters) {
+      if (args[parameterIndex] === undefined) {
+        throw new Error(`Missing required arguments at position ${parameterIndex}`);
+      }
     }
-    @propertyDecorator1
-    @propertyDecorator2
-    prop:string
-    @methodDecorator1
-    @methodDecorator2
-    method(@parametorDecorator1 @parametorDecorator2 params:any){}
+    return originalMethod.apply(this, args);
+  };
 }
+class User {
+  constructor(private name: string, private age: number) {}
+  @validateParameters
+  setName(newName: string, @validate age: number) {
+    this.name = newName;
+    this.age = age;
+  }
+}
+const user = new User("Alice", 10);
+//user.setName('Bob');
+user.setName(undefined, undefined);
