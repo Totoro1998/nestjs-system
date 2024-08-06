@@ -41,7 +41,7 @@ export class UserController {
     return `accept:${accept}`;
   }
   @Get("session")
-  handleSession(@Session() session: any, @Session("pageView") pageView: string) {
+  handleSession(@Session() session: any, @Session() pageView: string) {
     console.log("session", session);
     console.log("pageView", pageView);
     if (session.pageView) {
@@ -96,7 +96,7 @@ export class UserController {
   @Get("next")
   next(@Next() next) {
     console.log("next");
-    next();
+    next("wrong");
   }
   @Get("/redirect")
   @Redirect("/users/req", 301)
