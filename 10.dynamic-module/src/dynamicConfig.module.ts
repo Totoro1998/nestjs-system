@@ -31,11 +31,11 @@ export class DynamicConfigModule {
         });
       }, 3000);
     });
-    /*         return {
-            module:DynamicConfigModule,
-            controllers,
-            providers,
-            exports:providers.map(provider=>provider instanceof Function?provider:provider.provide)
-        } */
+    // return {
+    //   module: DynamicConfigModule,
+    //   controllers,
+    //   providers,
+    //   exports: providers.map((provider) => (provider instanceof Function ? provider : provider.provide)),
+    // };
   }
 }

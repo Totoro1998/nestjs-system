@@ -33,7 +33,7 @@ export class NestApplication {
       if ("module" in importedModule) {
         //获取动态模块返回的老的模块定义，新的providers数组，新的导出的token数组
         const { module, providers, controllers, exports } = importedModule;
-        //把老的和新的providers和exports进行合并
+        //把老的和新的controllers、providers、exports进行合并
         const oldControllers = Reflect.getMetadata("controllers", module);
         const newControllers = [...(oldControllers ?? []), ...(controllers ?? [])];
         defineModule(module, newControllers);
