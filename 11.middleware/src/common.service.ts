@@ -1,7 +1,7 @@
-import {Injectable} from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 @Injectable()
 export class CommonService {
-    log(message){
-        console.log('CommonService',message)
-    }
+  log(message) {
+    console.log("CommonService", message);
+  }
 }
