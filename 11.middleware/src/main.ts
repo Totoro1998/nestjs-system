@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import session from "express-session";
+
 function getMiddleware(val) {
   return (req, res, next) => {
     console.log(val);
