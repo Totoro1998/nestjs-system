@@ -1,7 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import session from "express-session";
-//import {loggerFunction} from './logger-function.middleware'
 function getMiddleware(val) {
   return (req, res, next) => {
     console.log(val);
@@ -19,7 +18,6 @@ async function bootstrap() {
     })
   );
   //这样可以注册全局的中间件，可以绑定到每个注册的路由上
-  //app.use(loggerFunction);
   app.use(getMiddleware("A"));
   await app.listen(3000);
 }

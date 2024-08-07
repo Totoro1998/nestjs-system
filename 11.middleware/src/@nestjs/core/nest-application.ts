@@ -68,7 +68,7 @@ export class NestApplication {
           //如果配置方法名是All。或者方法相同完全 匹配
           if (routeMethod === RequestMethod.ALL || routeMethod === req.method) {
             //此处middleware可能是一个类，也可能是一个实例，也可能只是一个函数
-            if ("use" in middleware.prototype || "use" in middleware) {
+            if ("use" in middleware.prototype || Object.prototype.hasOwnProperty.call(middleware, "use")) {
               const middlewareInstance = this.getMiddelwareInstance(middleware);
               middlewareInstance.use(req, res, next);
             } else if (middleware instanceof Function) {
