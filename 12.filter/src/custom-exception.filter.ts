@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 @Catch(BadRequestException, RequestTimeoutException)
 export class CustomExceptionFilter implements ExceptionFilter {
   constructor(@Inject("PREFIX") private readonly prefix) {}
+
   catch(exception: any, host: ArgumentsHost) {
     console.log("prefix", this.prefix);
     const ctx = host.switchToHttp();

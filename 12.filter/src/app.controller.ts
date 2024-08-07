@@ -25,6 +25,7 @@ export class AppController {
 
   @Get("custom")
   custom() {
+    // 抛出自定义异常
     throw new ForbiddenException();
   }
 

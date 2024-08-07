@@ -342,7 +342,6 @@ export class NestApplication {
   getFilterInstance(filter) {
     if (filter instanceof Function) {
       const dependencies = this.resolveDependencies(filter);
-      console.log("dependencies", dependencies);
       return new filter(...dependencies);
     }
     return filter;
