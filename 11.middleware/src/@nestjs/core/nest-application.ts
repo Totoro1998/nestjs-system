@@ -31,7 +31,7 @@ export class NestApplication {
     this.module.prototype.configure?.(this);
   }
   apply(...middleware) {
-    //把接收到的中间件放到中间数组中，并且返回当前的实例
+    //把接收到的中间件放到中间数组中，并且返回当前的实例,此版本实现的中间件都放到根模块中了。
     defineModule(this.module, middleware);
     this.middlewares.push(...middleware);
     return this;
@@ -101,6 +101,7 @@ export class NestApplication {
     routePath = path.posix.join("/", routePath);
     return { routePath, routeMethod };
   }
+
   //初始化提供化
   async initProviders() {
     //重写注册provider的流程
