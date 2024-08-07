@@ -13,19 +13,20 @@ let moduleC = {// 1 2
 } */
 
 let innerModule = {
-      providers:[InnerService,AddService],
-      exports:[InnerService]
-}
+  providers: [InnerService, AddService],
+  exports: [InnerService],
+};
 let commonModule = {
-  imports:[innerModule],
-  providers:[CommonService,AddService],
-  exports:[CommonService,innerModule]
-}
-let CoreModule ={
-  imports:[CommonModule],
-  providers:[],
-  exports:[CommonModule]//此处导出的可以是提供者，也可以是模块
-}
-let AppModule = {//CommonService InnerService
-  imports:[CoreModule]//但是导入的只能是模块
-}
+  imports: [innerModule],
+  providers: [CommonService, AddService],
+  exports: [CommonService, innerModule],
+};
+let CoreModule = {
+  imports: [CommonModule],
+  providers: [],
+  exports: [CommonModule], //此处导出的可以是提供者，也可以是模块
+};
+let AppModule = {
+  //CommonService InnerService
+  imports: [CoreModule], //但是导入的只能是模块
+};
