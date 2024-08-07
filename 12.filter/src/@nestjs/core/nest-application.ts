@@ -6,7 +6,7 @@ import { ArgumentsHost, RequestMethod } from "@nestjs/common";
 import { APP_FILTER } from "./constants";
 import { INJECTED_TOKENS, DESIGN_PARAMTYPES } from "../common/constants";
 import { defineModule } from "../common/module.decorator";
-import { GlobalHttpExectionFilter } from "../common/http-exception.filter";
+import { GlobalHttpExectionFilter } from "../common/custom-global-http-exception.filter";
 export class NestApplication {
   //在它的内部私用化一个Express实例
   private readonly app: Express = express();

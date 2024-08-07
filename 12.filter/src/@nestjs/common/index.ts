@@ -13,6 +13,6 @@ export * from "./http-status.enum";
 export * from "./http-exception";
 export * from "./arguments-host.interface";
 export * from "./exception-filter.interface";
-export * from "./http-exception.filter";
+export * from "./custom-global-http-exception.filter";
 export * from "./catch.decorator";
 export * from "./use-filters.decorator";
