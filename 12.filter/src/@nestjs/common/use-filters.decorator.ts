@@ -1,5 +1,6 @@
 import "reflect-metadata";
 
+//返回类或者方法装饰器
 export function UseFilters(...filters: any[]) {
   return (target: object | Function, propertyKey?: string | symbol, descriptor?: any) => {
     if (descriptor) {

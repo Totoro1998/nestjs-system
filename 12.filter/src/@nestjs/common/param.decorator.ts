@@ -1,4 +1,6 @@
 import "reflect-metadata";
+
+// 参数装饰器
 export const createParamDecorator = (keyOrFactory: String | Function) => {
   //target控制器原型 propertyKey 方法名handleRequest  parameterIndex 先走1再走0
   return (data?: any) => (target: any, propertyKey: string, parameterIndex: number) => {

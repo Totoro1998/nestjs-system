@@ -8,34 +8,32 @@ interface ModuleMetadata {
 }
 //定义模块装饰器
 export function Module(metadata: ModuleMetadata): ClassDecorator {
+  //类装饰器
   return (target: Function) => {
     //当一个类使用Module装饰器的时候就可以添加标识它是一个模块的元数据
     Reflect.defineMetadata("isModule", true, target);
-    //给模块类添加元数据 AppModule,元数据的名字叫controllers,值是controllers数组[AppController]
-    //给模块类AppModule添加元数据 providers，值是[LoggerService]
+    // 在类上保存controllers、providers、exports、imports元数据。
+    Reflect.defineMetadata("controllers", metadata.controllers, target);
+    Reflect.defineMetadata("providers", metadata.providers, target);
+    Reflect.defineMetadata("exports", metadata.exports, target);
+    Reflect.defineMetadata("imports", metadata.imports, target);
     //就是把控制器的类和提供者的类和对应的模块进行了关联
     //我得知道此控制器属于哪个模块
     defineModule(target, metadata.controllers);
-    Reflect.defineMetadata("controllers", metadata.controllers, target);
-    //我得知道此providers属于哪个模块 其实这行代码我们尚未使用 target就是module
+    //我得知道此providers属于哪个模块，但因为providers有多种语法，所以此处做了一些额外处理。只获取是类的provider，并进行关联。
     defineModule(
       target,
       (metadata.providers ?? []).map((provider) => (provider instanceof Function ? provider : provider.useClass)).filter(Boolean)
     );
-    Reflect.defineMetadata("providers", metadata.providers, target);
-    //在类上保存exports
-    Reflect.defineMetadata("exports", metadata.exports, target);
-    //在类上保存imports
-    Reflect.defineMetadata("imports", metadata.imports, target);
   };
 }
 
-export function defineModule(nestModule, targets = []) {
-  //遍历targets数组，为每个元素添加元数据，key是nestModule,值是对应的模块
+export function defineModule(targetModule, targets = []) {
   targets.forEach((target) => {
-    Reflect.defineMetadata("module", nestModule, target);
+    Reflect.defineMetadata("module", targetModule, target);
   });
 }
+// 全局模块装饰器
 export function Global() {
   return (target: Function) => {
     Reflect.defineMetadata("global", true, target);
