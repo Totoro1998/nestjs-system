@@ -87,8 +87,9 @@ export class NestApplication {
     this.rootModule.prototype.configure?.(this);
   }
 
+  // 为了解决：就依赖项注入而言，从任何模块外部注册的全局过滤器（如上例中使用 useGlobalFilters() ）无法注入依赖项，因为这是在任何模块的上下文之外完成的。
   async initGlobalFilters() {
-    // 获取当前的模块的所有的providers
+    // 获取当前的模块的所有的providers，其实可以从任何模块注入，但此处为了方便，使用了根模块
     const providers = Reflect.getMetadata("providers", this.rootModule) ?? [];
     for (const provider of providers) {
       if (provider.provide === APP_FILTER) {
