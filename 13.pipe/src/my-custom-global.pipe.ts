@@ -1,6 +1,6 @@
 import { ArgumentMetadata, Inject, PipeTransform } from "@nestjs/common";
 
-export class MyPipe implements PipeTransform {
+export class MyCustomGlobalPipe implements PipeTransform {
   constructor(@Inject("PREFIX") private prefix: string) {
     console.log("prefix", this.prefix);
   }

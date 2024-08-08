@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
-import { MyPipe } from "./my.pipe";
+import { MyCustomGlobalPipe } from "./my-custom-global.pipe";
 import { APP_PIPE } from "@nestjs/core";
 @Module({
   controllers: [AppController],
@@ -11,7 +11,7 @@ import { APP_PIPE } from "@nestjs/core";
     },
     {
       provide: APP_PIPE,
-      useClass: MyPipe,
+      useClass: MyCustomGlobalPipe,
     },
   ],
 })
