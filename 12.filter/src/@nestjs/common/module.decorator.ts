@@ -1,10 +1,10 @@
 import "reflect-metadata";
 //模块的元数据
 interface ModuleMetadata {
-  controllers?: Function[];
-  providers?: any[];
-  exports?: any[]; //模块的导出 可以把自己的一部分providers导出给别的模块的，别的模块只要导入了自己这个模块，
-  imports?: any[]; //导入的模块 可以导入别的模块，把别的模块的导出的providers给自己用
+  controllers?: Function[]; // 此模块中定义的一组控制器，这些控制器必须被实例化
+  providers?: any[]; // 将由 Nest 注入器实例化的提供者，这些提供者至少可以在此模块内共享
+  exports?: any[]; // 此模块提供的 providers 子集，这些提供者应在导入此模块的其他模块中可用。您可以使用提供者本身或其 token（provide 值）
+  imports?: any[]; // 导入的模块列表，这些模块导出此模块中需要的提供者
 }
 //定义模块装饰器
 export function Module(metadata: ModuleMetadata): ClassDecorator {
