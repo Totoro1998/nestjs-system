@@ -1,5 +1,5 @@
 import { ExecutionContext } from "@nestjs/common";
 
-export interface NestInterceptor{
-    intercept(context:ExecutionContext,next)
+export interface NestInterceptor {
+  intercept(context: ExecutionContext, next);
 }
