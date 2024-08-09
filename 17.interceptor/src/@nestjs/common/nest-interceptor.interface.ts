@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import { Observable } from "rxjs";
 export interface CallHandler<T = any> {
-    handle(): Observable<T>;
+  handle(): Observable<T>;
 }
