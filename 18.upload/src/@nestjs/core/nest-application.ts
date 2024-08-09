@@ -202,7 +202,7 @@ export class NestApplication {
     for (let importedProvider of importedProviders) {
       //获取此provider的token
       const exportToken = importedProvider.provide ?? importedProvider;
-      //如果此token在导出token数中存在，则说明此provider被 导出了
+      //如果此token在导出token数组中存在，则说明此provider被导出了
       if (exports.includes(exportToken)) {
         if (this.isModule(exportToken)) {
           this.registerProvidersFromModule(exportToken, module, ...parentModules);

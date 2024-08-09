@@ -48,6 +48,7 @@ export function FilesInterceptor(fieldName: string, maxCount?: number) {
   }
   return FilesInterceptor;
 }
+
 export function FileFieldsInterceptor(uploadedFiles) {
   @Injectable()
   class FileFieldsInterceptor implements NestInterceptor {
@@ -70,6 +71,7 @@ export function FileFieldsInterceptor(uploadedFiles) {
   }
   return FileFieldsInterceptor;
 }
+
 export function AnyFilesInterceptor() {
   @Injectable()
   class AnyFilesInterceptor implements NestInterceptor {
@@ -92,6 +94,7 @@ export function AnyFilesInterceptor() {
   }
   return AnyFilesInterceptor;
 }
+
 export function NoFilesInterceptor() {
   @Injectable()
   class NoFilesInterceptor implements NestInterceptor {
