@@ -1,4 +1,4 @@
 import { ExecutionContext } from "./execution-context.interface";
-export interface CanActivate{
-    canActivate(context: ExecutionContext): boolean
+export interface CanActivate {
+  canActivate(context: ExecutionContext): boolean;
 }
