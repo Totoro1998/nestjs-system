@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import {PayController} from './pay.controller';
+import { PayController } from "./pay.controller";
 @Module({
-    controllers: [PayController],
+  controllers: [PayController],
 })
 export class AppModule {}
